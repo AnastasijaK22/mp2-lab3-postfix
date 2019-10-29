@@ -1,9 +1,9 @@
 ﻿#include "postfix.h"
 #include "stack.h"
 
-/*bool TPostfix::isCorrect(string str)
+bool TPostfix::isCorrect(string str)
 {
-	string unacceptable = "!@#^&.,<>{}[]|=_1234567890?";
+	string unacceptable = "!@#^&.,<>{}[]|=_?";
 	int count = 0, k = 0, countOperation = 0, length = str.length();
 	if ((operands.find(str[0]) != string::npos) || (operands.find(str[length - 1]) != string::npos))
 		return false;
@@ -29,16 +29,25 @@
 	if (count != 0)
 		return false;
 	return true;
-}*/
+}
 
-//string TPostfix::ToPostfix()
-//{
-	//TStack<char> opStack(MaxStackSize);
-	//string tmp = "+-*/()";
-	/*for (int i = 0; i < infix.length(); i++)
+string TPostfix::ToPostfix()
+{
+	TStack<char> opStack(MaxStackSize);
+	string tmp = "+-*/()";
+	int length = infix.length();
+	for (int i = 0; i < length; i++)
 	{
 		if (tmp.find(infix[i]) == string::npos)
 			postfix += infix[i];
+		if ((infix[i] >= '0') && (infix[i] <= '9'))
+			if (i != length)
+			{
+				if ((infix[i + 1] < '0') || (infix[i + 1] > '9'))
+					postfix += '>';
+			}
+			else
+				postfix += '>';
 		if (infix[i] == '(')
 			opStack.push(infix[i]);
 		if (infix[i] == ')')
@@ -97,16 +106,30 @@ double TPostfix::Calculate()
 		if (operands.find(postfix[i]) == string::npos)
 		{
 			double p;
-			if (nameValues.find(postfix[i]) == string::npos)
+			if ((postfix[i] < 48) || (postfix[i] > 57))
 			{
-				nameValues += postfix[i];
-				cout << "Введите значение переменной - " << postfix[i] << endl;
-				cin >> p;
-				values[nameValues.length() - 1] = p;
+				if (nameValues.find(postfix[i]) == string::npos)
+				{
+					nameValues += postfix[i];
+					cout << "Введите значение переменной - " << postfix[i] << endl;
+					cin >> p;
+					values[nameValues.length() - 1] = p;
+				}
+				else
+				{
+					p = values[nameValues.find(postfix[i])];
+				}
+				//res.push(p);
 			}
 			else
 			{
-				p = values[nameValues.find(postfix[i])];
+				string number;
+				while (postfix[i] != '>')
+				{
+					number += postfix[i];
+					i++;
+				}
+				p = stoi(number);
 			}
 			res.push(p);
 		}
@@ -127,4 +150,4 @@ double TPostfix::Calculate()
 	}
 	delete[] values;
 	return res.pop();
-}*/
+}

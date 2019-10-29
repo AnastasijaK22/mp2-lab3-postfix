@@ -10,6 +10,7 @@ class TStack
   int size;
   int top;
   TStack(const TStack &st){}
+  TStack& operator=(const TStack &st){}
 public:
   TStack(int _size)
   {
@@ -38,19 +39,6 @@ public:
 	  if (empty())
 		  throw "Error";
 	  return pMem[top--];
-  }
-  TStack& operator=(const TStack &st) 
-  {
-	  if (this != &st)
-	  {
-		  size = st.size;
-		  top = st.top;
-		  delete[] pMem;
-		  pMem = new T[size];
-		  for (int i = 0; i < top; i++)
-			  pMem[i] = st.pMem[i];
-	  }
-	  return *this;
   }
   ~TStack()
   {

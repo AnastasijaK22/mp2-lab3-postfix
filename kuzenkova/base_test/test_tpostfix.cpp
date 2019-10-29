@@ -64,3 +64,10 @@ TEST(TPostfix, convert_equal_expression)
 	p2.ToPostfix();
 	EXPECT_EQ(p1.GetPostfix(), p2.GetPostfix());
 }
+
+TEST(TPostfix, calculation_is_correct)
+{
+	TPostfix p("(5+6)*2");
+	p.ToPostfix();
+	EXPECT_EQ(p.Calculate(), 22);
+}
